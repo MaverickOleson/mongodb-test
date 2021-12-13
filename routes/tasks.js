@@ -3,7 +3,7 @@ const express = require('express')
 const router = express.Router()
 
 //Import Controllers
-const {getAllTasks, updateTask, getTask, deleteTask, createTask} = require('../controllers/tasks')
+const { getAllTasks, updateTask, getTask, deleteTask, createTask } = require('../controllers/tasks')
 
 router.get('/', getAllTasks)
 

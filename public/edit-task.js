@@ -8,40 +8,40 @@ const PARAMS = window.location.search
 const ID = new URLSearchParams(params).get('id')
 let tempName
 
-const SHOWTASK = async ()=>{
-    try{
-        const {data: {task},} = await axios.get(`/api/v1/tasks/${ID}`)
-        const {_id: taskID, completed, name} = task
+const SHOWTASK = async () => {
+    try {
+        const { data: task, } = await axios.get(`/api/v1/tasks/${ID}`)
+        const { __id: taskid, completed, name } = task
 
-        TASKIDDOM.textContent = taskID
+        TASKIDDOM.textContent = taskid
         TASKNAMEDOM.value = name
         tempName = name
-        if(completed){
+        if (completed) {
             TASKCOMPLETEDOM.checked = true
         }
     }
-    catch{
+    catch {
         console.log(error)
     }
 }
 SHOWTASK()
 
-EDITFORMDOM.addEventListener('submit', async (e)=>{
+EDITFORMDOM.addEventListener('submit', async (e) => {
     EDITBTNDOM.textContent = 'Loading...'
     e.preventDefault()
-    try{
+    try {
         const TASKNAME = TASKNAMEDOM.value
         const TASKCOMPLETED = TASKCOMPLETEDOM.checked
 
-        const{data: {task}, } = await axios.patch(`/api/v1/tasks/${ID}`, {
-            name: TASKNAME, completed: TASKCOMPLETE
+        const { data: task, } = await axios.patch(`/api/v1/tasks/${ID}`, {
+            name: TASKNAME, completed: TASKCOMPLETED
         })
 
-        const {_id: taskID, completed, name} = task
+        // const { _id: TASKID, completed, name } = TASK
         FORMALERTDOM.style.display = 'block'
         FORMALERTDOM.textContent = 'Success, edited task'
         FORMALERTDOM.classList.add('text=success')
-    }catch(error){
+    } catch (error) {
         console.error(error)
         TASKNAMEDOM.value = tempName
         FORMALERTDOM.style.display = 'block'
