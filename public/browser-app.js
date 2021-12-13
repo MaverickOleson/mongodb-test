@@ -14,17 +14,24 @@ const SHOWTASKS = async () => {
             return;
         }
         const ALLTASKS = tasks.map((task) => {
-            const { completed, __id: taskid, name } = task;
-            return `<div class="single-task ${completed && "task-completed"}" }><h5><span><i class="far fa-check-circle"></i></span>${name}</h5><div class="task-links>
-            <!-- edit link -->
-            <a href="task.html?id=${taskid}" class="edit-link">
-            <i class="fas fa-edit"></i>
-            </a>
-            <!-- delete btn -->
-            <button type="button" class="delete-btn" data-id="${taskid}">
-            <i class="fas fa-trash"></i>
-            </button>
-            </div>
+            const { completed, _id: taskId, name } = task;
+            return `<div class="single-task ${completed && "task-completed"}">
+                <h5>
+                    <span>
+                        <i class="far fa-check-circle"></i>
+                    </span>
+                    ${name}
+                </h5>
+                <div class="task-links">
+                    <!-- edit link -->
+                    <a href="./task.html?id=${taskId}" class="edit-link">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <!-- delete btn -->
+                    <button type="button" class="delete-btn" data-id="${taskId}">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
             </div>`;
         }).join("");
         TASKSDOM.innerHTML = ALLTASKS;
@@ -40,12 +47,12 @@ SHOWTASKS();
 //delete task /api/tasks/:id
 
 TASKSDOM.addEventListener('click', async (e) => {
-    const EL = e.target;
-    if (EL.parentElement.classList.contains("delete-btn")) {
+    const EL = e.target.parentElement;
+    if (EL.classList.contains('delete-btn')) {
         LOADINGDOM.style.visibility = "visible";
-        const ID = EL.parentElement.dataset.id;
+        const ID = EL.dataset.id;
         try {
-            await axios.delete(`/api/tasks/${ID}`);
+            await axios.delete(`/api/v1/tasks/${ID}`);
             SHOWTASKS();
         }
         catch (error) {

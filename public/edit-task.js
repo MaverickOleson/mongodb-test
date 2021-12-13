@@ -5,22 +5,21 @@ const EDITFORMDOM = document.querySelector(".single-task-form")
 const EDITBTNDOM = document.querySelector(".single-edit-btn")
 const FORMALERTDOM = document.querySelector(".form-alert")
 const PARAMS = window.location.search
-const ID = new URLSearchParams(params).get('id')
+const ID = new URLSearchParams(PARAMS).get('id')
 let tempName
 
 const SHOWTASK = async () => {
     try {
         const { data: task, } = await axios.get(`/api/v1/tasks/${ID}`)
-        const { __id: taskid, completed, name } = task
-
-        TASKIDDOM.textContent = taskid
+        const { _id: taskId, completed, name } = task
+        TASKIDDOM.textContent = taskId
         TASKNAMEDOM.value = name
         tempName = name
         if (completed) {
             TASKCOMPLETEDOM.checked = true
         }
     }
-    catch {
+    catch(error) {
         console.log(error)
     }
 }
@@ -32,15 +31,15 @@ EDITFORMDOM.addEventListener('submit', async (e) => {
     try {
         const TASKNAME = TASKNAMEDOM.value
         const TASKCOMPLETED = TASKCOMPLETEDOM.checked
-
-        const { data: task, } = await axios.patch(`/api/v1/tasks/${ID}`, {
-            name: TASKNAME, completed: TASKCOMPLETED
+        await axios.patch(`/api/v1/tasks/${ID}`, {
+            name: 'sdf'
         })
+        console.log('dsf')
 
         // const { _id: TASKID, completed, name } = TASK
         FORMALERTDOM.style.display = 'block'
         FORMALERTDOM.textContent = 'Success, edited task'
-        FORMALERTDOM.classList.add('text=success')
+        FORMALERTDOM.classList.add('text-success')
     } catch (error) {
         console.error(error)
         TASKNAMEDOM.value = tempName
